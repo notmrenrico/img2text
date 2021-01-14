@@ -5,6 +5,7 @@ from PIL import Image
 # python img/surprised_pikachu.jpg 10 120 img/surprised_pikachu.txt
 
 char_aspect = .6
+gradient = " .:-=+*#%@"
 
 # parsing command line inputs
 input_file, colors, output_width, output_file = sys.argv[1:]
@@ -19,12 +20,11 @@ img_bw_quantized = original_img.convert("L").quantize(colors=ncolors)
 scaling_factor = output_width / original_width
 processed_img = img_bw_quantized.resize((output_width, int(scaling_factor * original_height * char_aspect)))
 
-img_array = np.array(processed_img)
-
-gradient = " .:-=+*#%@"
+img_array = np.array(processed_img) 
+scaled_array = np.rint(img_array * len(gradient) / ncolors).astype(int)
 
 with open(output_file, "w") as f:
-    for row in img_array:
+    for row in scaled_array:
         output = ""
         for value in row:
             output += gradient[value]
