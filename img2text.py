@@ -21,7 +21,8 @@ scaling_factor = output_width / original_width
 processed_img = img_bw_quantized.resize((output_width, int(scaling_factor * original_height * char_aspect)))
 
 img_array = np.array(processed_img) 
-scaled_array = np.rint(img_array * len(gradient) / ncolors).astype(int)
+gradient_scale = (len(gradient) - 1) / (ncolors-1)
+scaled_array = np.rint(img_array * gradient_scale).astype(int)
 
 with open(output_file, "w") as f:
     for row in scaled_array:
